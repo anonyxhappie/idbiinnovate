@@ -8,8 +8,8 @@ import path from 'path';
 // Note: In a serverless environment (like Vercel), this map is not shared across instances 
 // and resets on cold starts. However, it is highly effective for basic PoC abuse prevention.
 const rateLimitMap = new Map<string, { sessionCount: number, dailyCount: number, lastDate: string }>();
-const MAX_SESSION_QUERIES = 10;
-const MAX_DAILY_QUERIES = 20;
+const MAX_SESSION_QUERIES = 20;
+const MAX_DAILY_QUERIES = 40;
 
 export async function POST(request: Request) {
   try {
@@ -28,11 +28,11 @@ export async function POST(request: Request) {
     }
     
     if (rateData.sessionCount >= MAX_SESSION_QUERIES) {
-      return NextResponse.json({ error: "Session limit reached (max 10). Please refresh the page to start a new session." }, { status: 429 });
+      return NextResponse.json({ error: "Session limit reached (max 20). Please refresh the page to start a new session." }, { status: 429 });
     }
     
     if (rateData.dailyCount >= MAX_DAILY_QUERIES) {
-      return NextResponse.json({ error: "Daily limit reached (max 20). Please try again tomorrow." }, { status: 429 });
+      return NextResponse.json({ error: "Daily limit reached (max 40). Please try again tomorrow." }, { status: 429 });
     }
     
     rateData.sessionCount++;
