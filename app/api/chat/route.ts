@@ -4,40 +4,10 @@ import { investmentNudgeTool } from '@/lib/gemini';
 import fs from 'fs';
 import path from 'path';
 
-// Simple in-memory rate limiting map
-// Note: In a serverless environment (like Vercel), this map is not shared across instances 
-// and resets on cold starts. However, it is highly effective for basic PoC abuse prevention.
-const rateLimitMap = new Map<string, { sessionCount: number, dailyCount: number, lastDate: string }>();
-const MAX_SESSION_QUERIES = 20;
-const MAX_DAILY_QUERIES = 40;
 
 export async function POST(request: Request) {
   try {
     const { messages } = await request.json();
-
-    // Rate Limiting Logic
-    const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
-    const today = new Date().toISOString().split('T')[0];
-    
-    let rateData = rateLimitMap.get(ip) || { sessionCount: 0, dailyCount: 0, lastDate: today };
-    
-    // Reset daily count if it's a new day
-    if (rateData.lastDate !== today) {
-      rateData.dailyCount = 0;
-      rateData.lastDate = today;
-    }
-    
-    if (rateData.sessionCount >= MAX_SESSION_QUERIES) {
-      return NextResponse.json({ error: "Session limit reached (max 20). Please refresh the page to start a new session." }, { status: 429 });
-    }
-    
-    if (rateData.dailyCount >= MAX_DAILY_QUERIES) {
-      return NextResponse.json({ error: "Daily limit reached (max 40). Please try again tomorrow." }, { status: 429 });
-    }
-    
-    rateData.sessionCount++;
-    rateData.dailyCount++;
-    rateLimitMap.set(ip, rateData);
 
     // Check for API key
     if (!process.env.GEMINI_API_KEY) {
