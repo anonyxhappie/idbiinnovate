@@ -49,7 +49,7 @@ IMPORTANT: At the end of every text response, you MUST append a list of 1-3 shor
         textContent = `[Presented Investment Nudge Card for ${msg.data?.fundName} (₹${msg.data?.recommendedAmount})]`;
       }
       return {
-        role: msg.role === 'assistant' ? 'model' : 'user',
+        role: (msg.role === 'model' || msg.role === 'assistant') ? 'model' : 'user',
         parts: [{ text: textContent || "" }]
       };
     });
