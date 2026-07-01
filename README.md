@@ -5,8 +5,9 @@ An autonomous, predictive wealth co-pilot embedded directly into the IDBI mobile
 ## Screenshots
 
 <div align="center">
-  <img src="./public/assets/media__1782902030631.png" alt="Chat Interface" width="400" />
-  <img src="./public/assets/media__1782902030644.png" alt="Investment Nudge Card" width="400" />
+  <img src="./public/assets/media__1782902030631.png" alt="Chat Interface" width="250" />
+  <img src="./public/assets/media__1782902030644.png" alt="Investment Nudge Card" width="250" />
+  <img src="./public/assets/media__1782903592055.png" alt="Investment Success" width="250" />
 </div>
 
 ## Features (Phase 1 PoC)
