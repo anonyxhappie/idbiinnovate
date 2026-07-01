@@ -73,10 +73,16 @@ IMPORTANT: At the end of every text response, you MUST append a list of 1-3 shor
     // Map frontend messages to Gemini format
     // Frontend sends: { role: 'user' | 'model', parts: [{ text: string }] }
     // Gemini expects similar format.
-    const contents = messages.map((msg: any) => ({
-      role: msg.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: msg.content }]
-    }));
+    const contents = messages.map((msg: any) => {
+      let textContent = msg.content;
+      if (msg.type === 'nudge_card') {
+        textContent = `[Presented Investment Nudge Card for ${msg.data?.fundName} (₹${msg.data?.recommendedAmount})]`;
+      }
+      return {
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: textContent || "" }]
+      };
+    });
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
