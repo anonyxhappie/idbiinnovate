@@ -1,0 +1,51 @@
+{
+  "user": {
+    "name": "Ravi Kumar",
+    "accountNumber": "0456XXXXXX123",
+    "currentBalance": 45000,
+    "averageMonthlyExpenses": 30000,
+    "surplusCash": 15000
+  },
+  "recentTransactions": [
+    {
+      "id": "TXN001",
+      "date": "2026-06-28",
+      "description": "Salary Credit - Tech Corp",
+      "type": "credit",
+      "amount": 60000,
+      "category": "Income"
+    },
+    {
+      "id": "TXN002",
+      "date": "2026-06-29",
+      "description": "Rent Payment UPI",
+      "type": "debit",
+      "amount": 20000,
+      "category": "Housing"
+    },
+    {
+      "id": "TXN003",
+      "date": "2026-06-30",
+      "description": "Grocery UPI - DMart",
+      "type": "debit",
+      "amount": 3500,
+      "category": "Groceries"
+    },
+    {
+      "id": "TXN004",
+      "date": "2026-07-01",
+      "description": "Swiggy UPI",
+      "type": "debit",
+      "amount": 800,
+      "category": "Food"
+    },
+    {
+      "id": "TXN005",
+      "date": "2026-07-01",
+      "description": "Electricity Bill Autopay",
+      "type": "debit",
+      "amount": 1500,
+      "category": "Utilities"
+    }
+  ]
+}

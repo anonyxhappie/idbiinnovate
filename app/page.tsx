@@ -1,66 +1,128 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import React, { useState, useRef, useEffect } from 'react';
+import ChatBubble from '@/components/ChatBubble';
+import InvestmentNudgeCard from '@/components/InvestmentNudgeCard';
+
+interface Message {
+  role: 'user' | 'model';
+  type: 'text' | 'nudge_card';
+  content?: string;
+  data?: any;
+}
 
 export default function Home() {
+  const [messages, setMessages] = useState<Message[]>([
+    { role: 'model', type: 'text', content: 'Hello Ravi! I am your IDBI WealthLens Co-pilot. How can I help you grow your wealth today?' }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const chatAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatAreaRef.current) {
+      chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = { role: 'user', type: 'text', content: input };
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    setInput('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages })
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        setMessages(prev => [...prev, { role: 'model', type: 'text', content: 'Oops! Something went wrong on my end. Please try again.' }]);
+      } else {
+        setMessages(prev => [...prev, data]);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessages(prev => [...prev, { role: 'model', type: 'text', content: 'Network error. Please try again later.' }]);
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSend();
+    }
+  };
+
+  const handleDeclineNudge = () => {
+    setMessages(prev => [...prev, { role: 'user', type: 'text', content: 'No, thanks.' }]);
+    // Optionally trigger another API call here if we want Gemini to respond to the decline.
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="app-container">
+      <header className="app-header">
+        <div className="header-title">
+          <svg className="lens-icon" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </svg>
+          IDBI WealthLens
+        </div>
+        <div style={{ fontSize: '0.85rem', opacity: 0.8 }}>PoC Sandbox</div>
+      </header>
+
+      <div className="chat-area" ref={chatAreaRef}>
+        {messages.map((msg, index) => {
+          if (msg.type === 'nudge_card' && msg.data) {
+            return (
+              <InvestmentNudgeCard 
+                key={index} 
+                data={msg.data} 
+                onAccept={() => {}}
+                onDecline={handleDeclineNudge}
+              />
+            );
+          }
+          return <ChatBubble key={index} role={msg.role} content={msg.content || ''} />;
+        })}
+        {isLoading && (
+          <div className="bubble-container model">
+            <div className="bubble model" style={{ padding: '16px' }}>
+              <div className="loading-dots">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="input-area">
+        <input 
+          type="text" 
+          className="chat-input"
+          placeholder="Ask about your finances..." 
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={handleKeyPress}
+          disabled={isLoading}
         />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        <button className="send-button" onClick={handleSend} disabled={isLoading || !input.trim()}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+      <footer style={{ textAlign: 'center', fontSize: '0.75rem', padding: '8px', color: 'var(--text-light)', borderTop: '1px solid var(--border)', background: 'white' }}>
+        Created by <a href="https://github.com/anonyxhappie" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>Akshay Saini</a>
+      </footer>
     </div>
   );
 }
