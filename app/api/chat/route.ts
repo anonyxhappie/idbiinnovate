@@ -134,6 +134,14 @@ IMPORTANT: At the end of every text response, you MUST append a list of 1-3 shor
 
   } catch (error: any) {
     console.error('Error in chat API:', error);
+    
+    const errorMessage = error?.message?.toLowerCase() || '';
+    if (errorMessage.includes('429') || errorMessage.includes('quota')) {
+      return NextResponse.json({ 
+        error: 'AI Quota exhausted for today. Please try again later or add your own API key.'
+      }, { status: 429 });
+    }
+
     return NextResponse.json({ error: 'Failed to process chat message', details: error.message }, { status: 500 });
   }
 }
