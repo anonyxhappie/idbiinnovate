@@ -65,7 +65,10 @@ Be concise, professional, and persuasive.
 Here is the user's current financial context (mock data):
 ${userDataContext}
 
-If the user asks what to do with their money, or if you identify a surplus, you MUST call the "trigger_investment_nudge" tool to present an actionable UI card to the user. Do not just output plain text for investment suggestions.`;
+If the user asks what to do with their money, or if you identify a surplus, you MUST call the "trigger_investment_nudge" tool to present an actionable UI card to the user. Do not just output plain text for investment suggestions.
+
+IMPORTANT: At the end of every text response, you MUST append a list of 1-3 short, relevant follow-up questions the user could ask next. Format it EXACTLY like this at the very end of your message:
+|||SUGGESTIONS: ["question 1", "question 2"]`;
 
     // Map frontend messages to Gemini format
     // Frontend sends: { role: 'user' | 'model', parts: [{ text: string }] }
@@ -98,10 +101,24 @@ If the user asks what to do with their money, or if you identify a surplus, you 
     }
 
     // Otherwise, return standard text response
+    let text = response.text || "";
+    let suggestions: string[] = [];
+    
+    if (text.includes("|||SUGGESTIONS:")) {
+      const parts = text.split("|||SUGGESTIONS:");
+      text = parts[0].trim();
+      try {
+        suggestions = JSON.parse(parts[1].trim());
+      } catch(e) {
+        console.error("Failed to parse suggestions", parts[1]);
+      }
+    }
+
     return NextResponse.json({
       role: 'assistant',
       type: 'text',
-      content: response.text
+      content: text,
+      suggestions: suggestions
     });
 
   } catch (error: any) {

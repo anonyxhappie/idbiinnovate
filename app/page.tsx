@@ -15,6 +15,11 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'model', type: 'text', content: 'Hello Ravi! I am your IDBI WealthLens Co-pilot. How can I help you grow your wealth today?' }
   ]);
+  const [suggestions, setSuggestions] = useState<string[]>([
+    "What's my current balance?",
+    "How much did I spend on food this month?",
+    "Do I have any surplus cash to invest?"
+  ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const chatAreaRef = useRef<HTMLDivElement>(null);
@@ -25,13 +30,15 @@ export default function Home() {
     }
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+  const handleSend = async (overrideText?: string) => {
+    const textToSend = overrideText || input;
+    if (!textToSend.trim() || isLoading) return;
 
-    const userMessage: Message = { role: 'user', type: 'text', content: input };
+    const userMessage: Message = { role: 'user', type: 'text', content: textToSend };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput('');
+    setSuggestions([]);
     setIsLoading(true);
 
     try {
@@ -46,6 +53,9 @@ export default function Home() {
         setMessages(prev => [...prev, { role: 'model', type: 'text', content: `Oops! ${data.error}` }]);
       } else {
         setMessages(prev => [...prev, data]);
+        if (data.suggestions && data.suggestions.length > 0) {
+          setSuggestions(data.suggestions);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -102,6 +112,16 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      {suggestions.length > 0 && !isLoading && (
+        <div className="suggestions-container">
+          {suggestions.map((s, i) => (
+            <button key={i} className="suggestion-chip" onClick={() => handleSend(s)}>
+              {s}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="input-area">
         <input 

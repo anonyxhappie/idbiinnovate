@@ -301,3 +301,31 @@ body {
   0%, 80%, 100% { transform: scale(0); }
   40% { transform: scale(1); }
 }
+
+.suggestions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 12px 16px;
+  background: white;
+  justify-content: center;
+}
+
+.suggestion-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--primary);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.suggestion-chip:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
