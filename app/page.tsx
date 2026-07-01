@@ -43,7 +43,7 @@ export default function Home() {
 
       const data = await response.json();
       if (data.error) {
-        setMessages(prev => [...prev, { role: 'model', type: 'text', content: 'Oops! Something went wrong on my end. Please try again.' }]);
+        setMessages(prev => [...prev, { role: 'model', type: 'text', content: `Oops! ${data.error}` }]);
       } else {
         setMessages(prev => [...prev, data]);
       }

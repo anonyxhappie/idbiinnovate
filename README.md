@@ -16,6 +16,15 @@ An autonomous, predictive wealth co-pilot embedded directly into the IDBI mobile
 - **Predictive Cash Flow Nudge**: Analyzes mock transaction data, identifies surplus cash, and proactively sends an actionable UI card to invest the surplus.
 - **Mock Sandbox Integration**: Simulates IDBI Sandbox APIs for fetching transactions and executing investments.
 
+## Sample Questions to Try
+
+Once the app is running, try asking the AI these questions to see how it analyzes the mock financial data:
+- *"What's my current balance?"*
+- *"How much did I spend on food this month?"*
+- *"When do I need to pay my next rent?"*
+- *"Do I have any surplus cash?"*
+- *"What should I do with my extra savings?"* (This will trigger the Smart Investment Nudge!)
+
 ## Tech Stack
 
 - **Frontend**: Next.js (App Router), Vanilla CSS (Premium glassmorphism design)
