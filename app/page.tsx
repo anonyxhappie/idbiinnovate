@@ -94,7 +94,7 @@ export default function Home() {
               <InvestmentNudgeCard 
                 key={index} 
                 data={msg.data} 
-                onAccept={() => {}}
+                onAccept={() => handleSend("I have successfully invested! What should I do next?")}
                 onDecline={handleDeclineNudge}
               />
             );
