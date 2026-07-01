@@ -16,6 +16,7 @@ interface InvestmentNudgeCardProps {
 export default function InvestmentNudgeCard({ data, onAccept, onDecline }: InvestmentNudgeCardProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [declined, setDeclined] = useState(false);
 
   const handleAccept = async () => {
     setLoading(true);
@@ -35,6 +36,11 @@ export default function InvestmentNudgeCard({ data, onAccept, onDecline }: Inves
       console.error(e);
     }
     setLoading(false);
+  };
+
+  const handleDeclineClick = () => {
+    setDeclined(true);
+    onDecline();
   };
 
   if (success) {
@@ -69,10 +75,10 @@ export default function InvestmentNudgeCard({ data, onAccept, onDecline }: Inves
           </div>
           <p className="nudge-reason">{data.reasoning}</p>
           <div className="nudge-actions">
-            <button className="btn btn-decline" onClick={onDecline} disabled={loading}>
-              Decline
+            <button className="btn btn-decline" onClick={handleDeclineClick} disabled={loading || declined}>
+              {declined ? 'Declined' : 'Decline'}
             </button>
-            <button className="btn btn-accept" onClick={handleAccept} disabled={loading}>
+            <button className="btn btn-accept" onClick={handleAccept} disabled={loading || declined}>
               {loading ? (
                 <div className="loading-dots">
                   <span></span><span></span><span></span>
