@@ -95,7 +95,12 @@ IMPORTANT: At the end of every text response, you MUST append a list of 1-3 shor
         return NextResponse.json({
           role: 'assistant',
           type: 'nudge_card',
-          data: functionCall.args
+          data: functionCall.args,
+          suggestions: [
+            "Why did you recommend this fund?",
+            "What are the risks involved?",
+            "Can I invest a different amount?"
+          ]
         });
       }
     }
