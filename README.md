@@ -10,6 +10,13 @@ An autonomous, predictive wealth co-pilot embedded directly into the IDBI mobile
   <img src="./public/assets/media__1782903592055.png" alt="Investment Success" width="250" />
 </div>
 
+## Demo Video
+
+<div align="center">
+  <video src="./public/assets/idbi_wealthlens_demo.mp4" width="600" controls></video>
+</div>
+
+
 ## Features (Phase 1 PoC)
 
 - **Conversational UI**: A chat interface where users can ask financial questions, and the AI correctly identifies the intent.
