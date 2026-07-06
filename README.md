@@ -13,8 +13,13 @@ An autonomous, predictive wealth co-pilot embedded directly into the IDBI mobile
 ## Demo Video
 
 <div align="center">
-  <video src="./public/assets/idbi_wealthlens_demo.mp4" width="600" controls></video>
+  <a href="./public/assets/idbi_wealthlens_demo.mp4">
+    <img src="./public/assets/media__1782902030631.png" alt="Watch Demo Video" width="300" />
+    <br />
+    <span>🎥 Click to play the Demo Video</span>
+  </a>
 </div>
+
 
 
 ## Features (Phase 1 PoC)
