@@ -1,55 +1,89 @@
 # IDBI WealthLens
 
-An autonomous, predictive wealth co-pilot embedded directly into the IDBI mobile banking app. It shifts the banking paradigm from passive holding to active, automated wealth creation by analyzing daily cash flows, spending patterns, and account balances using AI to generate context-aware "micro-investment" nudges and personalized portfolio strategies.
+An AI-assisted wealth co-pilot concept for a mobile banking experience. The Phase 1 proof of concept combines conversational financial queries, cash-flow analysis, and contextual investment nudges over mock banking data.
+
+## What it demonstrates
+
+- **Conversational financial interface** with intent identification.
+- **Predictive cash-flow nudge** that identifies surplus cash in mock transactions.
+- **Structured tool calling** to work with financial data and trigger application actions.
+- **Mock sandbox integration** representing transaction and investment APIs.
+
+## Architecture
+
+```text
+User
+ ↓
+Next.js UI
+ ↓
+Intent / reasoning layer
+ ↓
+Financial tools
+ ├── transaction data
+ ├── balance / spending analysis
+ └── investment sandbox
+ ↓
+Contextual response or investment nudge
+```
+
+The project intentionally uses mock financial data and sandbox operations. It is a **proof of concept**, not a production banking integration.
 
 ## Screenshots
 
 <div align="center">
-  <img src="./public/assets/media__1782902030631.png" alt="Chat Interface" width="250" />
-  <img src="./public/assets/media__1782902030644.png" alt="Investment Nudge Card" width="250" />
-  <img src="./public/assets/media__1782903592055.png" alt="Investment Success" width="250" />
+  <img src="./public/assets/media__1782902030631.png" alt="Chat interface" width="250" />
+  <img src="./public/assets/media__1782902030644.png" alt="Investment nudge" width="250" />
+  <img src="./public/assets/media__1782903592055.png" alt="Investment success" width="250" />
 </div>
 
-## Demo Video
+## Demo
 
-<div align="center">
-  <a href="./public/assets/idbi_wealthlens_demo.mp4">
-    <img src="./public/assets/media__1782902030631.png" alt="Watch Demo Video" width="300" />
-    <br />
-    <span>🎥 Click to play the Demo Video</span>
-  </a>
-</div>
+The repository includes a demo video at [`public/assets/idbi_wealthlens_demo.mp4`](public/assets/idbi_wealthlens_demo.mp4).
 
+## Example questions
 
+```text
+What's my current balance?
+How much did I spend on food this month?
+When do I need to pay my next rent?
+Do I have any surplus cash?
+What should I do with my extra savings?
+```
 
-## Features (Phase 1 PoC)
+## Technology
 
-- **Conversational UI**: A chat interface where users can ask financial questions, and the AI correctly identifies the intent.
-- **Predictive Cash Flow Nudge**: Analyzes mock transaction data, identifies surplus cash, and proactively sends an actionable UI card to invest the surplus.
-- **Mock Sandbox Integration**: Simulates IDBI Sandbox APIs for fetching transactions and executing investments.
+- Next.js / App Router
+- React
+- Vanilla CSS
+- Gemini API for intent parsing and structured tool calling
 
-## Sample Questions to Try
+## Quick start
 
-Once the app is running, try asking the AI these questions to see how it analyzes the mock financial data:
-- *"What's my current balance?"*
-- *"How much did I spend on food this month?"*
-- *"When do I need to pay my next rent?"*
-- *"Do I have any surplus cash?"*
-- *"What should I do with my extra savings?"* (This will trigger the Smart Investment Nudge!)
+Requirements: Node.js and npm.
 
-## Tech Stack
+```bash
+git clone https://github.com/anonyxhappie/idbiinnovate.git
+cd idbiinnovate
+npm install
+```
 
-- **Frontend**: Next.js (App Router), Vanilla CSS (Premium glassmorphism design)
-- **Backend**: Next.js API Routes
-- **AI/Reasoning Engine**: Google Gemini API (`gemini-2.5-flash`) for intent parsing and structured tool calling.
+Create `.env.local` and provide the required Gemini API key:
 
-## Getting Started
+```text
+GEMINI_API_KEY=your_key_here
+```
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Add your Gemini API key to a `.env.local` file: `GEMINI_API_KEY=your_key_here`
-4. Run the development server: `npm run dev`
-5. Open [http://localhost:3000](http://localhost:3000)
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+## Scope and limitations
+
+This repository is a Phase 1 PoC. Financial data, banking APIs, and investment execution are simulated. It should not be interpreted as a production financial-advice or banking system.
 
 ## Author
 
